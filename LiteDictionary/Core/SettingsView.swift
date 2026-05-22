@@ -12,13 +12,14 @@ import KeyboardShortcuts
 struct SettingsView: View {
 
     @Binding var showingSubSettingPanel: Bool
+    @StateObject private var loginItemHelper = LoginItemHelper.shared
 
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             if showingSubSettingPanel {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text("Record the shortcut").bold()
+                        Text("查询快捷键").bold()
                         Spacer()
                         KeyboardShortcuts.Recorder(for: .togglePopover)
                     }
@@ -27,7 +28,19 @@ struct SettingsView: View {
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(4)
 
-                    MenuItem(title: "Back") {
+                    HStack {
+                        Text("开机自动启动").bold()
+                        Spacer()
+                        Toggle("", isOn: $loginItemHelper.isEnabled)
+                            .toggleStyle(.switch)
+                            .labelsHidden()
+                    }
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 8)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(4)
+
+                    MenuItem(title: "返回") {
                         showingSubSettingPanel = false
                     }
                 }

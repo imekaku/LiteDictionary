@@ -26,6 +26,7 @@ struct DictContentView: View {
         }
         .padding([.top, .bottom], 10)
         .padding([.leading, .trailing], 15)
+        .textSelection(.enabled)
     }
     
     private func getPronunciationView(pronunciations: [Pronunciation]) -> some View {

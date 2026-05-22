@@ -55,12 +55,23 @@ struct ContentView: View {
             ViewUtils.divider
 
             if let dictResponse = contentModel.dictResponse, dictResponse.code == 200, !searchText.isEmpty {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 0) {
-                        DictContentView(dictResponse: dictResponse)
+                if hasResults(dictResponse) {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            DictContentView(dictResponse: dictResponse)
+                        }
                     }
+                    .frame(maxHeight: 300)
+                } else {
+                    VStack {
+                        Spacer()
+                        Text("未找到结果")
+                            .foregroundColor(.gray)
+                            .padding(.vertical, 40)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
                 }
-                .frame(maxHeight: 300)
             } else {
                 SettingsView(showingSubSettingPanel: $showingSubSettingPanel)
             }
@@ -68,5 +79,9 @@ struct ContentView: View {
         .background(
             (contentModel.dictResponse != nil && contentModel.dictResponse?.code == 200 && !searchText.isEmpty) ? Color.white : Color.clear
         )
+    }
+
+    private func hasResults(_ response: DictResponse) -> Bool {
+        return !response.pronunciation.isEmpty || !response.words.isEmpty || !response.sentences.isEmpty
     }
 }
